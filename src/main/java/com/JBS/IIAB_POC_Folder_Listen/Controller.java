@@ -16,7 +16,7 @@ public class Controller {
     @Autowired
     WatchServiceConfig wsc;
     @GetMapping("/File/Read") // endpoint
-    public String readFile(@RequestHeader String folderPath,@RequestHeader String fileName) throws IOException, InterruptedException {
+    public String readFile(@RequestHeader String folderPath,@RequestHeader String fileName) throws IOException, InterruptedException { // Will Throw an error if the headers are not in the request with the same exact name
         StringBuilder sb = new StringBuilder();
         Boolean eventFound = wsc.run(String.valueOf(Paths.get(folderPath)),fileName);
         if(eventFound){ // if i have
