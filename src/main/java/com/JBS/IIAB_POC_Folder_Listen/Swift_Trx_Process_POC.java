@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class IiabPocFolderListenApplication {
+public class Swift_Trx_Process_POC {
 
 	public static void main(String[] args) {
-		SpringApplication.run(IiabPocFolderListenApplication.class, args);
+		SpringApplication.run(Swift_Trx_Process_POC.class, args);
 	}
 
 }
