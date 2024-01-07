@@ -18,7 +18,7 @@ public class JdbcImpl implements JdbcRepository{
 
     @Override
     public void addTransaction(SwiftTransaction swift) {
-        String query = "INSERT INTO ABDALLAH.SWIFT_POC (TRANS_ID, FILEDATA) VALUES (?, ?)";
+        String query = "INSERT INTO ABDALLAH.SWIFT_POC (TRANS_REF_ID, FILE_NAME) VALUES (?, ?)";
         try{
             jdbcTemplate.update(query,swift.getSwiftId(),swift.getFileData());
         }catch (DataAccessException e){

@@ -2,6 +2,7 @@ package com.JBS.IIAB_POC_Folder_Listen.WatchService;
 
 import com.JBS.IIAB_POC_Folder_Listen.DAO.JdbcImpl;
 import com.JBS.IIAB_POC_Folder_Listen.Model.SwiftTransaction;
+import com.prowidesoftware.swift.model.mt.mt1xx.MT103;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,21 +31,16 @@ public class WatchService {
         WatchKey key; // registration object of a watch service in directory (when I watch something it creates a key for this watch)
         while ((key = watchService.take()) != null) { // define the wait time on the thread to detect the change
             for (WatchEvent<?> event : key.pollEvents()) {
-                String fileData;
-                //SOLUTION 1
-//                Thread.sleep(1);
-//                fileData = printFileData(pathToFolder + File.separator + event.context());
-                //SOLUTION 2
+                String trx_Ref_No;
                 CustomThread ct = new CustomThread(pathToFolder+File.separator + event.context());
                 Thread t1 = new Thread(ct);
                 t1.start();
                 t1.join();
-                fileData = ct.getFileData();
+                trx_Ref_No = ct.getFileData();
                 // Add To Database
-                SwiftTransaction swift = new SwiftTransaction(event.context().toString(), fileData);
+                SwiftTransaction swift = new SwiftTransaction( trx_Ref_No ,event.context().toString());
                 uploadToDatabase(swift);
-                System.out.println("File affected: " + event.context() + "   ,File Data:  " + fileData);
-
+                System.out.println("File affected: " + event.context() + "   ,File Data:  " + trx_Ref_No);
             }
             key.reset();
         }
@@ -70,9 +66,11 @@ public class WatchService {
         String line;
         while ((line = br.readLine()) != null) {
             sb.append(line);
+            sb.append("\n");
         }
         br.close();
         fr.close();
-        return sb.toString();
+        MT103 mt = new MT103(sb.toString());
+        return mt.getField20().getComponent1();
     }
 }
